@@ -1,0 +1,63 @@
+﻿@model Category
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Form</title>
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        #labelDisplayOrder {
+            color: #000000; /* This sets the text color to black */
+            font-weight: bold; /* Optional: makes the text bold */
+        }
+
+        #labelCategoryName {
+            color: #000000; /* This sets the text color to black */
+            font-weight: bold; /* Optional: makes the text bold */
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Category Form</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="Name" id="labelCategoryName" style="margin-bottom: 15px;">Category Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter category name" required>
+            </div>
+            <div class="form-group">
+                <label for="DisplayOrder" id="labelDisplayOrder" style="margin-bottom: 15px;">Display Order</label>
+                <input type="number" class="form-control" id="DisplayOrder" name="DisplayOrder" placeholder="Enter display order" required>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary flex-fill mr-2">Create</button>
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary flex-fill">Back</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
