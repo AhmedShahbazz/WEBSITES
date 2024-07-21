@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBSITES.Data;
 
@@ -11,9 +12,11 @@ using WEBSITES.Data;
 namespace WEBSITES.Migrations
 {
     [DbContext(typeof(DBCONTEXT))]
-    partial class DBCONTEXTModelSnapshot : ModelSnapshot
+    [Migration("20240721140053_AddProductTableToDb")]
+    partial class AddProductTableToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,29 +74,29 @@ namespace WEBSITES.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2026, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8144),
+                            CategoryId = 1,
+                            ExpiryDate = new DateTime(2026, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1577),
                             Name = "Laptop"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2025, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8159),
+                            CategoryId = 1,
+                            ExpiryDate = new DateTime(2025, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1593),
                             Name = "Smartphone"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2029, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8162),
+                            CategoryId = 2,
+                            ExpiryDate = new DateTime(2029, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1595),
                             Name = "Novel"
                         },
                         new
                         {
                             Id = 4,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2027, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8164),
+                            CategoryId = 3,
+                            ExpiryDate = new DateTime(2027, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1596),
                             Name = "T-Shirt"
                         });
                 });

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<WEBSITES.Models.Product>
+
+<div class="container">
+    <h2 class="mb-4">Product List</h2>
+    <a asp-controller="Product" asp-action="Create" class="btn btn-primary mb-3">Add New Product</a>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Expiry Date</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.ExpiryDate.ToShortDateString()</td>
+                    <td>@product.Category.Name</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary mx-2 custom-btn-width ">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger mx-2 custom-btn-width">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

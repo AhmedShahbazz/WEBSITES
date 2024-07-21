@@ -63,14 +63,7 @@ namespace WEBSITES.Controllers
             }
             if (ModelState.IsValid)
             {
-                var category = _db.Categories.Find(obj.Id);
-                if (category == null)
-                {
-                    return NotFound();
-                }
-
-                category.Name = obj.Name;
-                category.DisplayOrder = obj.DisplayOrder;
+                _db.Categories.Update(obj);
                 _db.SaveChanges();
 
                 return RedirectToAction("Index");

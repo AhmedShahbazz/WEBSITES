@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBSITES.Data;
 
@@ -11,9 +12,11 @@ using WEBSITES.Data;
 namespace WEBSITES.Migrations
 {
     [DbContext(typeof(DBCONTEXT))]
-    partial class DBCONTEXTModelSnapshot : ModelSnapshot
+    [Migration("20240721131934_AddProductTableToDb")]
+    partial class AddProductTableToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,6 +44,26 @@ namespace WEBSITES.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DisplayOrder = 1,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DisplayOrder = 2,
+                            Name = "sci"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayOrder = 3,
+                            Name = "history "
+                        });
                 });
 
             modelBuilder.Entity("WEBSITES.Models.Product", b =>
@@ -59,43 +82,14 @@ namespace WEBSITES.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2026, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8144),
-                            Name = "Laptop"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2025, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8159),
-                            Name = "Smartphone"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2029, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8162),
-                            Name = "Novel"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2027, 7, 21, 19, 56, 13, 621, DateTimeKind.Local).AddTicks(8164),
-                            Name = "T-Shirt"
-                        });
                 });
 
             modelBuilder.Entity("WEBSITES.Models.Product", b =>
