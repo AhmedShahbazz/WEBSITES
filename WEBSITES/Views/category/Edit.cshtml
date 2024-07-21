@@ -1,11 +1,11 @@
-﻿@model Category
+﻿@model WEBSITES.Models.Category
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category Form</title>
+    <title>Edit Category</title>
 
     <style>
         body {
@@ -41,21 +41,21 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Category Form</h2>
-        <form asp-action="Create" asp-controller="Category" method="post">
-            @*<div asp-validation-summary="All"></div>*@
+        <h2 class="mb-4">Edit Category</h2>
+        <form asp-action="Edit" asp-controller="Category" method="post">
             <div class="form-group">
+                <input type="hidden" asp-for="Id" />
                 <label for="Name" id="labelCategoryName" style="margin-bottom: 15px;">Category Name</label>
-                <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter category name" required>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Enter category name" required>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="DisplayOrder" id="labelDisplayOrder" style="margin-bottom: 15px;">Display Order</label>
-                <input type="number" class="form-control" id="DisplayOrder" name="DisplayOrder" placeholder="Enter display order" required>
+                <input type="number" class="form-control" asp-for="DisplayOrder" placeholder="Enter display order" required>
                 <span asp-validation-for="DisplayOrder" class="text-danger"></span>
             </div>
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary flex-fill mr-2">Create</button>
+                <button type="submit" class="btn btn-primary flex-fill mr-2">Update</button>
                 <a asp-controller="Category" asp-action="Index" class="btn btn-secondary flex-fill">Back</a>
             </div>
         </form>
