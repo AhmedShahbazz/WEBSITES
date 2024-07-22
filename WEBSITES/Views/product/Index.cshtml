@@ -1,36 +1,152 @@
 ﻿@model IEnumerable<WEBSITES.Models.Product>
-
+<partial name="_Notification" />
 <div class="container">
-    <h2 class="mb-4">Product List</h2>
-    <a asp-controller="Product" asp-action="Create" class="btn btn-primary mb-3">Add New Product</a>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Expiry Date</th>
-                <th>Category</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model)
-            {
-                <tr>
-                    <td>@product.Name</td>
-                    <td>@product.ExpiryDate.ToShortDateString()</td>
-                    <td>@product.Category.Name</td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary mx-2 custom-btn-width ">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger mx-2 custom-btn-width">
-                                <i class="bi bi-trash-fill"></i> Delete
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row pt-4 pb-3 d-flex align-items-center">
+        <div class="col text-end">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-primary mt-3">
+                <i class="bi bi-plus-circle"></i> Add New Product
+            </a>
+        </div>
+    </div>
+
+    <!-- Card for the Header -->
+    <div class="card mb-3 product-list-card">
+        <div class="card-body text-center">
+            <h2 class="text-white mb-0">Product List</h2>
+        </div>
+    </div>
+
+    <!-- Card for the Table -->
+    <div class="card bg-white">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Expiry Date</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td>@product.Name</td>
+                                <td>@product.ExpiryDate.ToShortDateString()</td>
+                                <td>@product.Category.Name</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary mx-2 custom-btn-width">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <button class="btn btn-danger mx-2 custom-btn-width" onclick="confirmDelete('@product.Id')">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </button>
+                                        <form id="delete-form-@product.Id" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:none;">
+                                            <input type="hidden" name="Id" value="@product.Id" />
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function confirmDelete(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Product/Delete/' + id,
+                        data: {
+                            "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (response) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Deleted!",
+                                text: "Your product has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function () {
+                            swalWithBootstrapButtons.fire({
+                                title: "Error!",
+                                text: "There was an error deleting the product.",
+                                icon: "error"
+                            });
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        text: "Your product is safe :)",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    </script>
+}
+
+<style>
+    .custom-btn-width {
+        width: 300px; /* Adjust the width as needed */
+    }
+
+    .card {
+        border-radius: 0.375rem; /* Optional: adds rounded corners to the card */
+        border: 1px solid #ddd; /* Optional: adds border color to the card */
+    }
+
+    .card-body {
+        padding: 1.25rem; /* Adjust padding if necessary */
+    }
+
+    .text-primary {
+        color: #007bff; /* Ensure the text color fits your design */
+    }
+
+    .bg-light {
+        background-color: #f8f9fa; /* Light background color */
+    }
+
+    .bg-white {
+        background-color: #ffffff; /* White background color */
+    }
+
+    .product-list-card {
+        background-color: #445c3d; /* Green background color */
+    }
+
+    .text-white {
+        color: #ffffff; /* White text color */
+    }
+</style>

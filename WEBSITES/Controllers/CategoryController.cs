@@ -37,6 +37,7 @@ namespace WEBSITES.Controllers
             {
                 _db.Categories.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -65,7 +66,7 @@ namespace WEBSITES.Controllers
             {
                 _db.Categories.Update(obj);
                 _db.SaveChanges();
-
+                TempData["success"] = "Category Updated successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -93,6 +94,7 @@ namespace WEBSITES.Controllers
 
             _db.Categories.Remove(category);
             _db.SaveChanges();
+            TempData["success"] = "Category Deleted successfully";
             return RedirectToAction("Index");
         }
     }

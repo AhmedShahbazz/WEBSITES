@@ -32,6 +32,7 @@ namespace WEBSITES.Controllers
             {
                 _db.Products.Add(product);
                 await _db.SaveChangesAsync();
+                TempData["success"] = "Product Created successfully";
                 return RedirectToAction("Index");
             }
             ViewData["Categories"] = _db.Categories.ToList();
@@ -67,6 +68,7 @@ namespace WEBSITES.Controllers
             {
                 _db.Products.Update(product);
                 await _db.SaveChangesAsync();
+                TempData["success"] = "Product Updated successfully";
                 return RedirectToAction("Index");
             }
             ViewData["Categories"] = _db.Categories.ToList();
@@ -96,6 +98,7 @@ namespace WEBSITES.Controllers
 
             _db.Products.Remove(product);
             _db.SaveChanges();
+            TempData["success"] = "Product Deleled successfully";
             return RedirectToAction("Index");
         }
     }

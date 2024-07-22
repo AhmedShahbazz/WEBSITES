@@ -4,38 +4,118 @@
     ViewData["Title"] = "Edit Product";
 }
 
-<div class="container">
-    <h2 class="mb-4">Edit Product</h2>
-    <form asp-action="Edit" method="post">
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
 
-        <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
 
-        <div class="mb-3">
-            <label asp-for="ExpiryDate" class="form-label"></label>
-            <input asp-for="ExpiryDate" type="date" class="form-control" />
-            <span asp-validation-for="ExpiryDate" class="text-danger"></span>
-        </div>
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-        <div class="mb-3">
-            <label asp-for="CategoryId" class="form-label"></label>
-            <select asp-for="CategoryId" asp-items="@(new SelectList(ViewData["Categories"] as IEnumerable<WEBSITES.Models.Category>, "Id", "Name"))" class="form-select">
-                <option value="">Select a Category</option>
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-        </div>
-    </form>
-</div>
+        .btn {
+            width: 100%;
+        }
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        #labelName,
+        #labelExpiryDate,
+        #labelCategoryId {
+            color: #000000; /* This sets the text color to black */
+            font-weight: bold; /* Optional: makes the text bold */
+        }
+    </style>
+
+    <!-- SweetAlert2 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Edit Product</h2>
+        <form id="editForm" asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" id="formSubmissionFlag" name="formSubmissionFlag" value="false" />
+
+            <div class="form-group">
+                <label for="Name" id="labelName" style="margin-bottom: 15px;">Product Name</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Enter product name" required>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="ExpiryDate" id="labelExpiryDate" style="margin-bottom: 15px;">Expiry Date</label>
+                <input type="date" class="form-control" asp-for="ExpiryDate" placeholder="Enter expiry date" required>
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="CategoryId" id="labelCategoryId" style="margin-bottom: 15px;">Category</label>
+                <select class="form-select" asp-for="CategoryId" asp-items="@(new SelectList(ViewData["Categories"] as IEnumerable<WEBSITES.Models.Category>, "Id", "Name"))" required>
+                    <option value="">Select a Category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary flex-fill mr-2">Save Changes</button>
+                <a asp-action="Index" class="btn btn-secondary flex-fill">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the form from submitting immediately
+
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Set the hidden input field to true
+                    document.getElementById('formSubmissionFlag').value = 'true';
+                    // Submit the form after a short delay to allow the SweetAlert2 dialog to close
+                    setTimeout(() => {
+                        e.target.submit();
+                    }, 200); // Adjust delay if necessary
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        });
+
+        // Optional: Handle form submission on server-side if necessary
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            if (document.getElementById('formSubmissionFlag').value === 'false') {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
