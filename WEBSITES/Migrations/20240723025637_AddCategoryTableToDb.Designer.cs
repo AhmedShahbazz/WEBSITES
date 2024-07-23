@@ -12,8 +12,8 @@ using WEBSITES.Data;
 namespace WEBSITES.Migrations
 {
     [DbContext(typeof(DBCONTEXT))]
-    [Migration("20240721141508_AddProductsTableToDb")]
-    partial class AddProductsTableToDb
+    [Migration("20240723025637_AddCategoryTableToDb")]
+    partial class AddCategoryTableToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,26 @@ namespace WEBSITES.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DisplayOrder = 1,
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DisplayOrder = 2,
+                            Name = "Books"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayOrder = 3,
+                            Name = "Clothing"
+                        });
                 });
 
             modelBuilder.Entity("WEBSITES.Models.Product", b =>
@@ -60,6 +80,10 @@ namespace WEBSITES.Migrations
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -75,28 +99,32 @@ namespace WEBSITES.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            ExpiryDate = new DateTime(2026, 7, 21, 19, 15, 7, 344, DateTimeKind.Local).AddTicks(257),
+                            ExpiryDate = new DateTime(2026, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3295),
+                            ImageUrl = "",
                             Name = "Laptop"
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            ExpiryDate = new DateTime(2025, 7, 21, 19, 15, 7, 344, DateTimeKind.Local).AddTicks(276),
+                            ExpiryDate = new DateTime(2025, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3314),
+                            ImageUrl = "",
                             Name = "Smartphone"
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 2,
-                            ExpiryDate = new DateTime(2029, 7, 21, 19, 15, 7, 344, DateTimeKind.Local).AddTicks(278),
+                            ExpiryDate = new DateTime(2029, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3316),
+                            ImageUrl = "",
                             Name = "Novel"
                         },
                         new
                         {
                             Id = 4,
                             CategoryId = 3,
-                            ExpiryDate = new DateTime(2027, 7, 21, 19, 15, 7, 344, DateTimeKind.Local).AddTicks(282),
+                            ExpiryDate = new DateTime(2027, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3318),
+                            ImageUrl = "",
                             Name = "T-Shirt"
                         });
                 });

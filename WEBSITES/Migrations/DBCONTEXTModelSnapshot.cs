@@ -41,6 +41,26 @@ namespace WEBSITES.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DisplayOrder = 1,
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DisplayOrder = 2,
+                            Name = "Books"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayOrder = 3,
+                            Name = "Clothing"
+                        });
                 });
 
             modelBuilder.Entity("WEBSITES.Models.Product", b =>
@@ -75,32 +95,32 @@ namespace WEBSITES.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2026, 7, 23, 4, 21, 56, 591, DateTimeKind.Local).AddTicks(4402),
+                            CategoryId = 1,
+                            ExpiryDate = new DateTime(2026, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9569),
                             ImageUrl = "",
                             Name = "Laptop"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2025, 7, 23, 4, 21, 56, 591, DateTimeKind.Local).AddTicks(4418),
+                            CategoryId = 1,
+                            ExpiryDate = new DateTime(2025, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9587),
                             ImageUrl = "",
                             Name = "Smartphone"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2029, 7, 23, 4, 21, 56, 591, DateTimeKind.Local).AddTicks(4420),
+                            CategoryId = 2,
+                            ExpiryDate = new DateTime(2029, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9589),
                             ImageUrl = "",
                             Name = "Novel"
                         },
                         new
                         {
                             Id = 4,
-                            CategoryId = 12,
-                            ExpiryDate = new DateTime(2027, 7, 23, 4, 21, 56, 591, DateTimeKind.Local).AddTicks(4422),
+                            CategoryId = 3,
+                            ExpiryDate = new DateTime(2027, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9591),
                             ImageUrl = "",
                             Name = "T-Shirt"
                         });

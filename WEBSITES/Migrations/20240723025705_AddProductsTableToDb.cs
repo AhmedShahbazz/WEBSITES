@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WEBSITES.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedProductTable : Migration
+    public partial class AddProductsTableToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,28 +16,28 @@ namespace WEBSITES.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "ExpiryDate",
-                value: new DateTime(2026, 7, 21, 19, 4, 26, 920, DateTimeKind.Local).AddTicks(817));
+                value: new DateTime(2026, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9569));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "ExpiryDate",
-                value: new DateTime(2025, 7, 21, 19, 4, 26, 920, DateTimeKind.Local).AddTicks(833));
+                value: new DateTime(2025, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9587));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "ExpiryDate",
-                value: new DateTime(2029, 7, 21, 19, 4, 26, 920, DateTimeKind.Local).AddTicks(835));
+                value: new DateTime(2029, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9589));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "ExpiryDate",
-                value: new DateTime(2027, 7, 21, 19, 4, 26, 920, DateTimeKind.Local).AddTicks(837));
+                value: new DateTime(2027, 7, 23, 7, 57, 4, 700, DateTimeKind.Local).AddTicks(9591));
         }
 
         /// <inheritdoc />
@@ -48,28 +48,28 @@ namespace WEBSITES.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "ExpiryDate",
-                value: new DateTime(2026, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1577));
+                value: new DateTime(2026, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3295));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "ExpiryDate",
-                value: new DateTime(2025, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1593));
+                value: new DateTime(2025, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3314));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "ExpiryDate",
-                value: new DateTime(2029, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1595));
+                value: new DateTime(2029, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3316));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "ExpiryDate",
-                value: new DateTime(2027, 7, 21, 19, 0, 47, 692, DateTimeKind.Local).AddTicks(1596));
+                value: new DateTime(2027, 7, 23, 7, 56, 36, 255, DateTimeKind.Local).AddTicks(3318));
         }
     }
 }
