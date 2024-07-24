@@ -102,6 +102,7 @@ namespace WEBSITES.Controllers
 
             // Remove Category from ModelState validation (if not required)
             ModelState.Remove("Category");
+            ModelState.Remove("ImageUrl");
 
             // Update product properties with new values (except potentially ID)
             existingProduct.Name = product.Name;
@@ -115,6 +116,16 @@ namespace WEBSITES.Controllers
                 {
                     try
                     {
+                        // Delete the old image if it exists
+                        if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
+                        {
+                            var oldImagePath = Path.Combine(_env.WebRootPath, "images", existingProduct.ImageUrl);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
                         // Handle image upload, potentially update product.ImageUrl
                         existingProduct.ImageUrl = await SaveUploadedFileAsync(ImageUrl);
                     }
@@ -139,6 +150,26 @@ namespace WEBSITES.Controllers
             return View(existingProduct);
         }
 
+        private async Task<string> SaveUploadedFileAsync(IFormFile file)
+        {
+            var uploadFolder = Path.Combine(_env.WebRootPath, "images");
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            var filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filepath = Path.Combine(uploadFolder, filename);
+
+            using (var fileStream = new FileStream(filepath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return filename;
+        }
+
+
 
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int id)
@@ -158,6 +189,16 @@ namespace WEBSITES.Controllers
             var product = await _db.Products.FindAsync(id);
             if (product != null)
             {
+                // Delete the image file if it exists
+                if (!string.IsNullOrEmpty(product.ImageUrl))
+                {
+                    var imagePath = Path.Combine(_env.WebRootPath, "images", product.ImageUrl);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
                 _db.Products.Remove(product);
                 await _db.SaveChangesAsync();
                 TempData["success"] = "Product deleted successfully";
@@ -170,23 +211,7 @@ namespace WEBSITES.Controllers
             return RedirectToAction("Index");
         }
 
-        private async Task<string> SaveUploadedFileAsync(IFormFile file)
-        {
-            var uploadFolder = Path.Combine(_env.WebRootPath, "images");
-            if (!Directory.Exists(uploadFolder))
-            {
-                Directory.CreateDirectory(uploadFolder);
-            }
 
-            var filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filepath = Path.Combine(uploadFolder, filename);
 
-            using (var fileStream = new FileStream(filepath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            return filename;
-        }
     }
 }

@@ -1,8 +1,100 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<WEBSITES.Models.Product>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .card {
+        height: auto; /* Allow card height to adjust based on content */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Ensure content is spaced appropriately */
+
+        
+    }
+
+    .card-img-top {
+        height: 200px; /* Fixed height for images */
+        object-fit: cover;
+        
+    }
+
+    .card-body {
+        padding: 10px; /* Adjust padding as needed */
+
+    }
+
+    .card-title {
+        margin-bottom: 5px; /* Adjust spacing between titles */
+        font-weight: bold; /* Make text bold */
+    }
+
+    .shadowed-card {
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 1);
+    }
+
+    .btn{
+        margin-top: 10px;
+        border-radius: 7px;
+        
+    }
+
+    .category-list-card {
+        background-color: #445c3d; /* Green background color */
+    }
+
+    .text-white {
+        color: #ffffff; /* White text color */
+    }
+
+    .row.pb-3 {
+        margin-bottom: 30px; /* Adjust the value as needed */
+    }
+
+    .card {
+        margin-top: 20px; /* Optional: Adjust the spacing between cards */
+    }
+
+    .circular-card {
+        border-radius:7px; /* Makes the border circular */
+        overflow: hidden; /* Ensures the content stays within the circular border */
+     /* Adjust the width as needed */
+        height: 60px; /* Adjust the height as needed */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .circular-card .card-body {
+            padding: 0; /* Remove padding if needed */
+        }
+</style>
+<div class="cards mb-3 category-list-card circular-card">
+    <div class="card-body text-center">
+        <h2 class="text-white mb-0">PRODUCTS</h2>
+    </div>
+</div>
+
+<div class="row pb-3">
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-sm-6 mb-4">
+            <div class="card border-0 p-3 shadowed-card border-top border-5 rounded">
+
+                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                {
+                    <img src="~/images/@product.ImageUrl" class="card-img-top rounded" alt="Product Image">
+                }
+                else
+                {
+                    <img src="~/images/default-image.png" class="card-img-top rounded" alt="Default Image">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-title">Expiry Date: @product.ExpiryDate.ToString("yyyy-MM-dd")</p> <!-- Format date -->
+                    <p class="card-title">Category: @product.Category.Name</p> <!-- Adjusted to access Category.Name -->
+                </div>
+                <div>
+                    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary  bg-gradient border-0 form-control"> Details</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>
