@@ -8,9 +8,11 @@ using WEBSITES.Data;
 using WEBSITES.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WEBSITES.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly DBCONTEXT _db;

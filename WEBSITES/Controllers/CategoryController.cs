@@ -3,9 +3,11 @@ using WEBSITES.Data;
 using WEBSITES.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WEBSITES.Controllers
 {
+    [Authorize(Roles =SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly DBCONTEXT _db;

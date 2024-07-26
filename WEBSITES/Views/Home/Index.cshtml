@@ -1,24 +1,41 @@
 ﻿@model IEnumerable<WEBSITES.Models.Product>
 
 <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        min-height: 100%;
+    }
+
+    body {
+        background-image: url('/images/back5.jpg'); /* Correct path for background image */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed; /* Fix background image while scrolling */
+    }
+
+    .content-container {
+        padding: 20px; /* Optional: Adjust padding as needed */
+        background: rgba(255, 255, 255, 0.8); /* Optional: Add a semi-transparent background for readability */
+        border-radius: 10px; /* Optional: Rounded corners for the content container */
+        margin: 20px; /* Optional: Margin to keep content away from the edges */
+    }
+
     .card {
         height: auto; /* Allow card height to adjust based on content */
         display: flex;
         flex-direction: column;
         justify-content: space-between; /* Ensure content is spaced appropriately */
-
-        
     }
 
     .card-img-top {
         height: 200px; /* Fixed height for images */
         object-fit: cover;
-        
     }
 
     .card-body {
         padding: 10px; /* Adjust padding as needed */
-
     }
 
     .card-title {
@@ -30,14 +47,17 @@
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 1);
     }
 
-    .btn{
+    .btn {
         margin-top: 10px;
         border-radius: 7px;
-        
     }
 
     .category-list-card {
         background-color: #445c3d; /* Green background color */
+    }
+
+    .category-list-cards {
+        background-color: black; /* Green background color */
     }
 
     .text-white {
@@ -53,9 +73,9 @@
     }
 
     .circular-card {
-        border-radius:7px; /* Makes the border circular */
+        border-radius: 7px; /* Makes the border circular */
         overflow: hidden; /* Ensures the content stays within the circular border */
-     /* Adjust the width as needed */
+        /* Adjust the width as needed */
         height: 60px; /* Adjust the height as needed */
         display: flex;
         align-items: center;
@@ -66,34 +86,47 @@
             padding: 0; /* Remove padding if needed */
         }
 </style>
-<div class="cards mb-3 category-list-card circular-card">
-    <div class="card-body text-center">
-        <h2 class="text-white mb-0">PRODUCTS</h2>
+
+<div class="content-container">
+    <div class="cards mb-3 category-list-cards circular-card">
+        <div class="card-body text-center">
+            <h2 class="text-white mb-0">PRODUCTS</h2>
+        </div>
     </div>
-</div>
 
-<div class="row pb-3">
-    @foreach (var product in Model)
+    @foreach (var categoryGroup in Model.GroupBy(p => p.Category))
     {
-        <div class="col-lg-3 col-sm-6 mb-4">
-            <div class="card border-0 p-3 shadowed-card border-top border-5 rounded">
+        <div class="category-section">
+            <div class="cards mb-3 category-list-card circular-card">
+                <div class="card-body text-center">
+                    <h2 class="text-white mb-0">@categoryGroup.Key.Name</h2>
+                </div>
+            </div>
 
-                @if (!string.IsNullOrEmpty(product.ImageUrl))
+            <div class="row pb-3">
+                @foreach (var product in categoryGroup)
                 {
-                    <img src="~/images/@product.ImageUrl" class="card-img-top rounded" alt="Product Image">
+                    <div class="col-lg-3 col-sm-6 mb-4">
+                        <div class="card border-0 p-3 shadowed-card border-top border-5 rounded">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="~/images/@product.ImageUrl" class="card-img-top rounded" alt="Product Image">
+                            }
+                            else
+                            {
+                                <img src="~/images/default-image.png" class="card-img-top rounded" alt="Default Image">
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-title">Expiry Date: @product.ExpiryDate.ToString("yyyy-MM-dd")</p> <!-- Format date -->
+                                <p class="card-title">Category: @product.Category.Name</p> <!-- Adjusted to access Category.Name -->
+                            </div>
+                            <div>
+                                <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary bg-gradient border-0 form-control">Details</a>
+                            </div>
+                        </div>
+                    </div>
                 }
-                else
-                {
-                    <img src="~/images/default-image.png" class="card-img-top rounded" alt="Default Image">
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-title">Expiry Date: @product.ExpiryDate.ToString("yyyy-MM-dd")</p> <!-- Format date -->
-                    <p class="card-title">Category: @product.Category.Name</p> <!-- Adjusted to access Category.Name -->
-                </div>
-                <div>
-                    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary  bg-gradient border-0 form-control"> Details</a>
-                </div>
             </div>
         </div>
     }

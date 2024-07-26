@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Xml;
 using WEBSITES.Models;
 
 namespace WEBSITES.Data
 {
-    public class DBCONTEXT : DbContext
+    public class DBCONTEXT : IdentityDbContext<IdentityUser>
     {
         public DBCONTEXT(DbContextOptions<DBCONTEXT> options): base(options)
         {
@@ -13,8 +15,11 @@ namespace WEBSITES.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<User> users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // Seed the Categories table
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Electronics", DisplayOrder = 1 },
