@@ -18,12 +18,21 @@ namespace WEBSITES.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchQuery)
         {
             // Query products including the related Category entity
-            IEnumerable<Product> productsList = _dbContext.Products.Include(p => p.Category).ToList();
-            return View(productsList);
+            var productsList = _dbContext.Products.Include(p => p.Category).AsQueryable();
+
+            // Filter the products based on the search query
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                productsList = productsList.Where(p => p.Name.Contains(searchQuery) || p.Category.Name.Contains(searchQuery));
+            }
+
+            return View(productsList.ToList());
         }
+
+
         public IActionResult Details(int id)
         {
             // Query a single product including the related Category entity
