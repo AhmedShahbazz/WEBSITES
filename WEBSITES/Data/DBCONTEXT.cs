@@ -17,6 +17,8 @@ namespace WEBSITES.Data
 
         public DbSet<User> users { get; set; }
 
+        public DbSet<AJAXX> AJAXX { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

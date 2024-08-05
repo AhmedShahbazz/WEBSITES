@@ -1,0 +1,129 @@
+﻿@model WEBSITES.Models.AJAXX
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Category</title>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        #labelDisplayOrder {
+            color: #000000; /* This sets the text color to black */
+            font-weight: bold; /* Optional: makes the text bold */
+        }
+
+        #labelCategoryName {
+            color: #000000; /* This sets the text color to black */
+            font-weight: bold; /* Optional: makes the text bold */
+        }
+
+        .card {
+            border-radius: 0.375rem; /* Optional: adds rounded corners to the card */
+            border: 1px solid #ddd; /* Optional: adds border color to the card */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-body {
+            padding: 1.25rem; /* Adjust padding if necessary */
+        }
+
+        .category-list-card {
+            background-color: #445c3d; /* Green background color */
+        }
+
+        .text-white {
+            color: #ffffff; /* White text color */
+        }
+    </style>
+
+    <!-- SweetAlert2 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card mb-3 category-list-card">
+            <div class="card-body text-center">
+                <h2 class="text-white mb-0">Category List</h2>
+            </div>
+        </div>
+        <form id="editForm" asp-action="Edit" asp-controller="AJAXX" method="post">
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" id="formSubmissionFlag" name="formSubmissionFlag" value="false" />
+                <label for="Name" id="labelCategoryName" style="margin-bottom: 15px;">Category Name</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Enter category name" required>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="DisplayOrder" id="labelDisplayOrder" style="margin-bottom: 15px;">Display Order</label>
+                <input type="number" class="form-control" asp-for="DisplayOrder" placeholder="Enter display order" required>
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary flex-fill mr-2">Update</button>
+                <a asp-controller="AJAXX" asp-action="Index" class="btn btn-secondary flex-fill">Back</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the form from submitting immediately
+
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Set the hidden input field to true
+                    document.getElementById('formSubmissionFlag').value = 'true';
+                    // Submit the form after a short delay to allow the SweetAlert2 dialog to close
+                    setTimeout(() => {
+                        e.target.submit();
+                    }, 200); // Adjust delay if necessary
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        });
+
+        // Optional: Handle form submission on server-side if necessary
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            if (document.getElementById('formSubmissionFlag').value === 'false') {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
