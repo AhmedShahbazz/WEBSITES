@@ -10,7 +10,7 @@ namespace WEBSITES.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly   DBCONTEXT _dbContext;
+        private readonly DBCONTEXT _dbContext;
 
         public HomeController(ILogger<HomeController> logger, DBCONTEXT dbContext)
         {
@@ -18,7 +18,7 @@ namespace WEBSITES.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index(string searchQuery)
+        public IActionResult Index(string? searchQuery)
         {
             // Query products including the related Category entity
             var productsList = _dbContext.Products.Include(p => p.Category).AsQueryable();
@@ -29,16 +29,16 @@ namespace WEBSITES.Controllers
                 productsList = productsList.Where(p => p.Name.Contains(searchQuery) || p.Category.Name.Contains(searchQuery));
             }
 
+            // Convert to List and pass to the view
             return View(productsList.ToList());
         }
-
 
         public IActionResult Details(int id)
         {
             // Query a single product including the related Category entity
-            Product product = _dbContext.Products
-                                        .Include(p => p.Category)
-                                        .FirstOrDefault(p => p.Id == id);
+            var product = _dbContext.Products
+                                    .Include(p => p.Category)
+                                    .FirstOrDefault(p => p.Id == id);
 
             if (product == null)
             {
@@ -56,7 +56,8 @@ namespace WEBSITES.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            return View(new ErrorViewModel { RequestId = requestId });
         }
     }
 }
