@@ -8,35 +8,74 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DBCONTEXT>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DBCONTEXT>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddRazorPages();
-builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<DBCONTEXT>().AddDefaultTokenProviders();
-builder.Services.ConfigureApplicationCookie(option =>
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    option.LoginPath = $"/Identity/Account/Login";
-    option.LogoutPath = $"/Identity/Account/Logout";
-    option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    options.SignIn.RequireConfirmedAccount = true;
+})
+.AddEntityFrameworkStores<DBCONTEXT>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
-builder.Services.AddScoped<IEmailSender ,EmailSender>(); 
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHsts(); // Enforce HTTPS and security headers
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapRazorPages();
+
+// Custom routes for CategoryController
+app.MapControllerRoute(
+    name: "category_create",
+    pattern: "category/Add",
+    defaults: new { controller = "Category", action = "Create" }
+);
+
+app.MapControllerRoute(
+    name: "category_edit",
+    pattern: "category/Update/{id}",
+    defaults: new { controller = "Category", action = "Edit" }
+);
+
+//app.MapControllerRoute(
+//    name: "category_delete",
+//    pattern: "category/Remove/{id}",
+//    defaults: new { controller = "Category", action = "Delete" }
+//);
+
+app.MapControllerRoute(
+    name: "category_index",
+    pattern: "category/index",
+    defaults: new { controller = "Category", action = "Index" }
+);
+
+// Default route
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapRazorPages();
 
 app.Run();
